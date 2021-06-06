@@ -14,11 +14,20 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    GoogleMap mMap;
 
     String[] permissoesRequeridas = {
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -43,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         txtValorLatitude = findViewById(R.id.txtValorLatitude);
         txtValorLongitude = findViewById(R.id.txtValorLongitude);
+
+        //criando o mapa
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         //Verificar se o serviço de loc esta disponível
 
@@ -78,25 +92,25 @@ public class MainActivity extends AppCompatActivity {
     //abrir caixa para aceitar as permissões
     private boolean solicitarPermissaoParaObterLocalizacao() {
 
-        Toast.makeText(this, "Aplicativo não tem permissão", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Verificando permissões", Toast.LENGTH_LONG).show();
         List<String> permissoesNegadas = new ArrayList<>();
         int permissaoNegada;
 
-        for (String permissao: this.permissoesRequeridas) {
-            permissaoNegada = ContextCompat.checkSelfPermission(MainActivity.this,permissao);
+        for (String permissao : this.permissoesRequeridas) {
+            permissaoNegada = ContextCompat.checkSelfPermission(MainActivity.this, permissao);
 
-            if(permissaoNegada!= PackageManager.PERMISSION_GRANTED){
+            if (permissaoNegada != PackageManager.PERMISSION_GRANTED) {
                 permissoesNegadas.add(permissao);
             }
 
         }
-        if(!permissoesNegadas.isEmpty()){
+        if (!permissoesNegadas.isEmpty()) {
             ActivityCompat.requestPermissions(
                     MainActivity.this,
                     permissoesNegadas.toArray(new String[permissoesNegadas.size()]),
                     APP_PERMISSOES_ID);
             return false;
-        }else{
+        } else {
 
             return true;
         }
@@ -108,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        if(location !=null){
+        if (location != null) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-        }else{
+        } else {
             latitude = 0.00;
             longitude = 0.00;
         }
@@ -122,10 +136,18 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Coordenadas obtidas com sucesso", Toast.LENGTH_LONG).show();
     }
 
-    private String formataGeopoit(double valor){
+    private String formataGeopoit(double valor) {
         DecimalFormat decimalFormat = new DecimalFormat("#.######");
-        return  decimalFormat.format(valor);
+        return decimalFormat.format(valor);
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng localizacaoCelular = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(localizacaoCelular).title("Você esta aqui!!!"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(localizacaoCelular));
+    }
 }
