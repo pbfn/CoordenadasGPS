@@ -30,7 +30,7 @@
         android:layout_marginLeft="16dp"
         android:text="@string/txt_latitude"
         android:textColor="@color/verde_limao"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/txtValorLatitude"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtValorLatitude" />
@@ -44,7 +44,7 @@
         android:layout_marginTop="80dp"
         android:text="@string/txt_longitude"
         android:textColor="@color/verde_limao"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLatitude" />
 
@@ -58,7 +58,7 @@
         android:hint="@string/txt_valor_zero"
         android:textColor="@color/verde_limao"
         android:textColorHint="@color/white"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,7 +72,7 @@
         android:hint="@string/txt_valor_zero"
         android:textColor="@color/verde_limao"
         android:textColorHint="@color/white"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtValorLatitude" />
 
